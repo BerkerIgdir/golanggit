@@ -30,7 +30,7 @@ func main() {
 
 	root := os.Args[1:]
 	if len(root) == 0 {
-		path, err := os.Getwd()
+		path, err := os.Executable()
 		if err != nil {
 			fmt.Println(fmt.Errorf(err.Error()))
 		}
