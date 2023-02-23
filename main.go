@@ -40,7 +40,6 @@ func main() {
 
 	pre()
 	startTime := time.Now()
-	startCoordinator()
 	fileOperation(root[0])
 	wg.Wait()
 	post()
@@ -71,6 +70,7 @@ func pre() {
 	sema = make(chan struct{}, 5)
 	gitch = make(chan string)
 	buildch = make(chan string)
+	startCoordinator()
 }
 func post() {
 	//kills gradle daemons
