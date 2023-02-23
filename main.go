@@ -30,13 +30,18 @@ func main() {
 
 	root := os.Args[1:]
 	if len(root) == 0 {
-		root = []string{"."}
+		path, err := os.Getwd()
+		if err != nil {
+			fmt.Println(fmt.Errorf(err.Error()))
+		}
+		fmt.Println(fmt.Printf("The root directory is:%s", path))
+		root = []string{path}
 	}
 
 	pre()
 	startTime := time.Now()
-	fileOperation(root[0])
 	startCoordinator()
+	fileOperation(root[0])
 	wg.Wait()
 	post()
 	executionTime := time.Since(startTime)
@@ -44,11 +49,12 @@ func main() {
 
 }
 func startCoordinator() {
+	fmt.Println("The coordinator is being started.")
 	go func() {
 		for {
 			select {
 			case path := <-gitch:
-				fmt.Println(path)
+				fmt.Println(fmt.Printf("Git directory is: %s", path))
 				go pull(path)
 			case path := <-buildch:
 				fmt.Println(path)
@@ -96,7 +102,7 @@ func initSSHKey() {
 func fileOperation(absolutePath string) {
 	f, err := os.ReadDir(absolutePath)
 	if err != nil {
-		fmt.Println("Directory does not exist", err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 	for _, fd := range f {
