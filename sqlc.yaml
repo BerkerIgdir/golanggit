@@ -1,0 +1,9 @@
+version: 2
+sql:
+  - engine: "sqlite"
+    schema: "./db/migration/001_init_schema.up.sql"
+    queries: "./db/query"
+    gen:
+      go:
+        package: "db"
+        out: "./db/sqlc/"
